@@ -1,16 +1,13 @@
-import { Box, Button, Stack } from '@mui/material';
+import { Box } from '@mui/material';
+import Login from './pages/Login';
+import Home from './pages/Home';
 import './App.css';
 
 function App({ spotifyApi }) {
 	console.log(spotifyApi);
 	return (
 		<Box className="App">
-			<h1>Techover Self Made - Spotify</h1>
-			<Stack spacing={2} direction={'row'}>
-				<Button variant="text">Text</Button>
-				<Button variant="contained">Contained</Button>
-				<Button variant="outlined">Outlined</Button>
-			</Stack>
+			<Home />
 		</Box>
 	);
 }
