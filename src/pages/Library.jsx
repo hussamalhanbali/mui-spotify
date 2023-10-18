@@ -1,9 +1,9 @@
-import { Box, List, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { Box, List, Typography } from '@mui/material';
 import PlaylistItem from '../components/PlaylistItem/PlaylistItem';
 
 const Library = ({ spotifyApi, token }) => {
-	const [playlists, setPlaylists] = useState([]);
+	const [albumList, setAlbumList] = useState(null);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -11,18 +11,19 @@ const Library = ({ spotifyApi, token }) => {
 			if (!spotifyApi) return;
 
 			const data = await spotifyApi.getUserPlaylists();
-			setPlaylists(data.body.items);
+
 			setLoading(false);
-			console.log(data.body.items);
+			setAlbumList(data.body.items);
 		}
 		getPlaylists();
 	}, [spotifyApi, token]);
 
 	const renderPlaylistItems = () => {
 		if (loading) {
-			return [1, 2, 3, 4, 5, 6, 7].map((e, i) => <PlaylistItem loading={loading} key={i} />);
+			return [1, 2, 3, 4, 5, 6, 7].map((_, i) => <PlaylistItem key={i} loading={loading} />);
 		}
-		return playlists.map((playlist, i) => <PlaylistItem loading={loading} key={i} {...playlist} />);
+
+		return albumList.map((playlist, i) => <PlaylistItem key={i} {...playlist} loading={loading} />);
 	};
 
 	return (
@@ -30,20 +31,17 @@ const Library = ({ spotifyApi, token }) => {
 			id="Library"
 			px={3}
 			sx={{
-				display: { xs: 'flex', md: 'none' },
-				backgroundColor: 'Background.default',
+				display: { xs: 'flex', md: 'flex' },
+				bgcolor: 'background.default',
 				flex: 1,
 				flexDirection: 'column',
 				overflowY: 'auto'
 			}}
 		>
-			<Typography py={3} sx={{ color: 'text.primary', fontSize: 30 }}>
-				Ditt bibilotek
+			<Typography py={3} variant="h2" fontWeight="bold" sx={{ color: 'text.primary', fontSize: 30 }}>
+				Ditt bibliotek
 			</Typography>
-			<List>
-				{/* <PlaylistItem loading={true} /> */}
-				{renderPlaylistItems()}
-			</List>
+			<List>{renderPlaylistItems()}</List>
 		</Box>
 	);
 };
