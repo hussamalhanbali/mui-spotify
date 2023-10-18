@@ -1,50 +1,74 @@
-import { Box, Divider, Grid } from '@mui/material';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import React from 'react';
+import { Box, Grid, Divider } from '@mui/material';
+import { AccessTimeRounded } from '@mui/icons-material';
 import SongRow from '../SongRow/SongRow';
 
 const SongTable = ({ songs, loading, spotifyApi }) => {
-	console.log({ songs, loading, spotifyApi });
-
 	const renderSongs = () => {
 		if (loading) {
-			return [1, 2, 3, 4, 5].map((e, i) => <SongRow loading={loading} key={i} i={i} images={null} />);
+			return [1, 2, 3, 4, 5, 6].map((_, i) => <SongRow loading={loading} key={i} i={i} images={{}} />);
 		}
-		return songs.map((song, i) => (
-			<SongRow
-				album={song.album.name}
-				images={song.album.images}
-				title={song.name}
-				artist={song.artists[0].name}
-				duration={song.duration_ms / 1000}
-				spotifyApi={spotifyApi}
-				position={song.position}
-				contextUri={song.contextUri}
-				key={i}
-				i={i}
-			/>
-		));
+
+		return songs.map((song, i) => {
+			return (
+				<SongRow
+					album={song.album.name}
+					images={song.album.images}
+					title={song.name}
+					artist={song.artists[0].name}
+					duration={song.duration_ms / 1000}
+					key={i}
+					i={i}
+					position={song.position}
+					contextUri={song.contextUri}
+					spotifyApi={spotifyApi}
+				/>
+			);
+		});
 	};
 
 	return (
-		<Box p={{ xs: 3, md: 4 }} sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-			<Grid container px={2} p={1} sx={{ width: '100%', color: 'text.secondary', fontSize: 14 }}>
-				<Grid sx={{ width: 35, display: 'flex', alignItems: 'center' }} item>
+		<Box
+			p={{ xs: 3, md: 4 }}
+			xs={{
+				flex: 1,
+				overflowY: 'auto',
+				display: 'flex',
+				flexDirection: 'column'
+			}}
+		>
+			<Grid container px={2} py={1} sx={{ width: '100%', color: 'text.secondary', fontSize: 14 }}>
+				<Grid item sx={{ width: 35, display: 'flex', alignItems: 'center' }}>
 					#
 				</Grid>
-				<Grid sx={{ flex: 1, display: 'flex', alignItems: 'center' }} item>
+				<Grid item sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
 					Title
 				</Grid>
-				<Grid xs={3} sx={{ display: { xs: 'none', md: 'flex' } }} item>
+				<Grid
+					item
+					xs={3}
+					sx={{
+						display: { xs: 'none', md: 'flex' },
+						alignItems: 'center'
+					}}
+				>
 					Album
 				</Grid>
-				<Grid xs={3} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }} item>
-					<AccessTimeIcon sx={{ width: 20, height: 20 }} />
+				<Grid
+					item
+					xs={3}
+					sx={{
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'flex-end'
+					}}
+				>
+					<AccessTimeRounded sx={{ width: 20, height: 20 }} />
 				</Grid>
 			</Grid>
-			<Box>
+			<Box pb={2}>
 				<Divider sx={{ width: '100%', height: 1 }} />
 			</Box>
-			{/* <SongRow images={0} artist={'Drake'} album='Her Loss' title={'Rich Flex'} duration='3:32' i={1} loading={false}/> */}
 			{renderSongs()}
 		</Box>
 	);
