@@ -1,28 +1,46 @@
-import { KeyboardArrowDown } from '@mui/icons-material';
-import { Box, Button, Container, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Typography, Grid, IconButton, Container } from '@mui/material';
 import PlayerControls from '../PlayerControls/PlayerControls';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-const PlayerOverlay = ({ playerOverlayIsOpen, closeOverlay, progress, is_paused, duration, player, current_track, active }) => {
+const PlayerOverlay = ({ progress, is_paused, duration, player, playerOverlayIsOpen, closeOverlay, current_track }) => {
 	return (
 		<Box
 			id="PlayerOverlay"
 			sx={{
 				width: '100%',
 				height: 'calc(100vh - 75px)',
-				backgroundColor: 'background.paper',
+				bgcolor: 'background.paper',
 				display: { xs: 'block', md: 'none' },
 				position: 'fixed',
 				top: 0,
 				left: 0,
 				transition: 'all 0.3s',
-				transform: playerOverlayIsOpen ? 'translateY(0px)' : 'translateY(100vh)'
+				transform: playerOverlayIsOpen ? 'translateY(0)' : 'translateY(100vh)'
 			}}
 		>
-			<Container sx={{ height: '100%', background: 'linear-gradient(0deg, #121212 0%,#39d47250 100%);' }}>
-				<Grid container direction={'column'} justifyContent={'space-between'} sx={{ height: '100%' }}>
-					<Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
-						<IconButton onClick={closeOverlay} sx={{ paddingLeft: 0 }}>
-							<KeyboardArrowDown fontSize="large" sx={{ color: 'text.primary' }} />
+			<Container
+				sx={{
+					height: '100%',
+					background: 'linear-gradient(0deg, #121212 0%, #F0790050 100%);'
+				}}
+			>
+				<Grid container direction={'column'} justifyContent="space-between" sx={{ height: '100%' }}>
+					<Grid
+						item
+						xs={1}
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							position: 'relative'
+						}}
+					>
+						<IconButton
+							onClick={() => closeOverlay()}
+							sx={{
+								paddingLeft: '0px'
+							}}
+						>
+							<KeyboardArrowDownIcon fontSize="large" sx={{ color: 'text.primary' }} />
 						</IconButton>
 					</Grid>
 					<Grid
@@ -35,22 +53,15 @@ const PlayerOverlay = ({ playerOverlayIsOpen, closeOverlay, progress, is_paused,
 						}}
 					></Grid>
 					<Grid item xs={1}>
-						<Typography sx={{ color: 'text.primary', fontSize: '28px' }}>{current_track?.name}</Typography>
-						<Typography sx={{ color: 'text.secondary', fontSize: '18px' }}>{current_track?.artists[0].name}</Typography>
+						<Typography variant="body1" sx={{ color: 'text.primary', fontSize: '28px' }}>
+							{current_track?.name}
+						</Typography>
+						<Typography variant="body1" sx={{ color: 'text.primary', fontSize: '18px' }}>
+							{current_track?.artists[0].name}
+						</Typography>
 					</Grid>
 					<Grid item xs={2}>
-						{/* <PlayerControls progress={progress} is_paused={is_paused} duration={duration} player={player} /> */}
-
-                        {active ? (
-						<PlayerControls
-							progress={progress}
-							duration={duration}
-							is_paused={is_paused}
-							player={player}
-						/>
-					) : (
-						<Box>Please transfer Playback</Box>
-					)}
+						<PlayerControls progress={progress} is_paused={is_paused} duration={duration} player={player} />
 					</Grid>
 				</Grid>
 			</Container>
