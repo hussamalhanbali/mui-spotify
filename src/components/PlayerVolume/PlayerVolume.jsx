@@ -1,31 +1,41 @@
-import { VolumeDown, VolumeOff, VolumeUp } from '@mui/icons-material';
-import { Slider, Stack } from '@mui/material';
 import { useState } from 'react';
+import { VolumeDown, VolumeUp, VolumeOff } from '@mui/icons-material';
+import { Grid, Stack, Slider } from '@mui/material';
 
 const PlayerVolume = ({ player }) => {
-	const [volume, setVolume] = useState(50);
+	const defaultVolume = 50;
+	const [volume, setVolume] = useState(defaultVolume);
 
-	const handleVolumeChange = async (value) => {
+	const handleVolumeChange = async (v) => {
 		try {
-			await player.setVolume(value / 100);
-		} catch (e) {
-			console.error(e);
+			await player.setVolume(v / 100);
+		} catch (err) {
+			console.error(err);
 		}
 	};
+
 	return (
-		<Stack direction={'row'} spacing={2} alignItems={'center'} sx={{ width: 150, color: 'text.secondary' }}>
-			{volume === 0 ? <VolumeOff /> : volume < 50 ? <VolumeDown /> : <VolumeUp />}
-			<Slider
-				min={0}
-				max={100}
-				step={1}
-				value={volume}
-				onChange={(e, v) => setVolume(v)}
-				onChangeCommitted={async (e, v) => {
-					handleVolumeChange(v);
-				}}
-			/>
-		</Stack>
+		<Grid
+			item
+			xs={3}
+			sx={{
+				display: { xs: 'none', md: 'flex' },
+				alignItems: 'center',
+				justifyContent: 'flex-end'
+			}}
+		>
+			<Stack spacing={2} direction="row" alignItems="center" sx={{ width: 150, color: 'text.secondary' }}>
+				{volume === 0 ? <VolumeOff /> : volume < 50 ? <VolumeDown /> : <VolumeUp />}
+				<Slider
+					min={0}
+					max={100}
+					step={1}
+					value={volume}
+					onChange={(e, v) => setVolume(v)}
+					onChangeCommitted={async (_, value) => handleVolumeChange(value)}
+				/>
+			</Stack>
+		</Grid>
 	);
 };
 
